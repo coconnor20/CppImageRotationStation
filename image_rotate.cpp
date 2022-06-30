@@ -19,6 +19,9 @@ class PGMImage {
         void printImg(PGMImage img){
             int size = img.height * img.width;
             for(int i = 0; i < size; i++){
+                if(i % height == 0){
+                    std::cout << std::endl;
+                }
                 std::cout << img.img_arr[i];
             }
         }
