@@ -25,6 +25,15 @@ class PGMImage {
                 std::cout << img.img_arr[i];
             }
         }
+
+        int getAverageBrightness(PGMImage img){
+            long average_brightness = 0;
+            int imgsize = img.height*img.width;
+            for(int i = 0; i < imgsize; i++){
+                average_brightness += img.img_arr[i];
+            }
+            return ((average_brightness/imgsize)/img.denom);
+        }
 };
 
 PGMImage readFile(std::string fname){
@@ -63,4 +72,5 @@ int main(int argc, char** argv){
     std::string fname = argv[1];
     PGMImage img = readFile(fname);
     img.printImg(img);
+    std::cout << img.getAverageBrightness(img) << std::endl;
 }
