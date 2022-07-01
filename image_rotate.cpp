@@ -1,4 +1,5 @@
 #include<iostream>
+#include<algorithm>
 #include<fstream>
 #include<sstream>
 #include<vector>
@@ -38,8 +39,35 @@ class PGMImage {
             return result;
         }
 
-        void rotateLeft(PGMImage img){
-            
+        void rotateLeft(PGMImage *img){
+           std::vector<int> lrimg;
+           for(int i = (img->width-1); i >= 0; i--){
+               for(int j = 0; j < img->height; j++){
+                   lrimg.push_back(img->img_arr[img->width * j + i]);
+               }
+           }
+           int temp = img->width;
+           img->width = img->height;
+           img->height = temp;
+           std::swap(img->img_arr, lrimg);
+        }
+
+        void rotateRight(PGMImage *img){
+           std::vector<int> lrimg;
+           for(int i = 0; i < img->width; i++){
+               for(int j = (height-1); j >= 0; j--){
+                   lrimg.push_back(img->img_arr[img->width * j + i]);
+               }
+           }
+           int temp = img->width;
+           img->width = img->height;
+           img->height = temp;
+           std::swap(img->img_arr, lrimg);
+        }
+
+        void rotateOneEighty(PGMImage *img){
+            img->rotateLeft(img);
+            img->rotateLeft(img);
         }
 };
 
@@ -78,6 +106,4 @@ int main(int argc, char** argv){
     if(argc > 2 || argc < 1) std::cerr << "Invalid Input| Usage: ./image_rotate <pgm image>" << std::endl;
     std::string fname = argv[1];
     PGMImage img = readFile(fname);
-    img.printImg(img);
-    std::cout << img.getAverageBrightness(img) << std::endl;
 }
