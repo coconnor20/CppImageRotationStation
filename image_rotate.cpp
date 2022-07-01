@@ -69,9 +69,33 @@ class PGMImage {
             img->rotateLeft(img);
             img->rotateLeft(img);
         }
+
+        void writeImage(PGMImage img){
+            std::ofstream myfile;
+            myfile.open("output.pgm");
+            myfile << "P2\n";
+            myfile << "# out.ascii.pgm \n";
+            // format a string buffer of the height and width
+            std::string linebuffer;
+            linebuffer = std::to_string(img.width) + " " + std::to_string(img.height) + '\n';
+            myfile << linebuffer;
+            myfile << std::to_string(img.denom) + '\n';
+            //clear the buffer and go print lines of image data
+            linebuffer.clear();
+            for(int row = 0; row < img.height; row++){
+                for(int col = 0; col < img.width; col++){
+                    linebuffer = linebuffer + std::to_string(img.img_arr[img.width * row + col]) + " ";  
+                }
+                linebuffer = linebuffer + '\n';
+                myfile << linebuffer;
+                linebuffer.clear();
+            }
+
+            myfile.close();
+        }
 };
 
-PGMImage readFile(std::string fname){
+PGMImage readImage(std::string fname){
     int h = 0;
     int w = 0;
     int d = 0;
@@ -105,5 +129,8 @@ PGMImage readFile(std::string fname){
 int main(int argc, char** argv){
     if(argc > 2 || argc < 1) std::cerr << "Invalid Input| Usage: ./image_rotate <pgm image>" << std::endl;
     std::string fname = argv[1];
-    PGMImage img = readFile(fname);
+    PGMImage img = readImage(fname);
+    img.rotateLeft(&img);
+    img.rotateLeft(&img);
+    img.writeImage(img);
 }
