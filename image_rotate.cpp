@@ -23,16 +23,18 @@ class PGMImage {
                     std::cout << std::endl;
                 }
                 std::cout << img.img_arr[i];
-            }
+            } 
         }
 
-        int getAverageBrightness(PGMImage img){
-            long average_brightness = 0;
-            int imgsize = img.height*img.width;
+        float getAverageBrightness(PGMImage img){
+            long average_brightness = 0.0;
+            int imgsize = img.height * img.width;
             for(int i = 0; i < imgsize; i++){
                 average_brightness += img.img_arr[i];
             }
-            return ((average_brightness/imgsize)/img.denom);
+            float ab = float(average_brightness) / float(imgsize);
+            float result = ab/float(img.denom);
+            return result;
         }
 };
 
@@ -46,7 +48,7 @@ PGMImage readFile(std::string fname){
 
     //read first line to check pgm version
     std::getline(infile, buffer);
-    if(buffer.compare("P5") != 0) std::cerr << "Invalid PGM Image" << std::endl;
+    if(buffer.compare("P2") != 0) std::cerr << "Invalid PGM Image" << std::endl;
 
     //ignore second line comment
     std::getline(infile, buffer);
@@ -71,6 +73,6 @@ int main(int argc, char** argv){
     if(argc > 2 || argc < 1) std::cerr << "Invalid Input| Usage: ./image_rotate <pgm image>" << std::endl;
     std::string fname = argv[1];
     PGMImage img = readFile(fname);
-    img.printImg(img);
+    //img.printImg(img);
     std::cout << img.getAverageBrightness(img) << std::endl;
 }
