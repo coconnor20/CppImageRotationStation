@@ -16,10 +16,11 @@ class PGMImage {
             denom = d;
             img_arr = ia;
         }
+
         void printImg(PGMImage img){
             int size = img.height * img.width;
             for(int i = 0; i < size; i++){
-                if(i % height == 0){
+                if(i % width == 0){
                     std::cout << std::endl;
                 }
                 std::cout << img.img_arr[i];
@@ -35,6 +36,10 @@ class PGMImage {
             float ab = float(average_brightness) / float(imgsize);
             float result = ab/float(img.denom);
             return result;
+        }
+
+        void rotateLeft(PGMImage img){
+            
         }
 };
 
@@ -55,7 +60,7 @@ PGMImage readFile(std::string fname){
 
     //get dims from third line
     ss << infile.rdbuf();
-    ss >> h >> w >> d;
+    ss >> w >> h >> d;
 
     //read in the rest of the image
     std::vector<int> img;
@@ -73,6 +78,6 @@ int main(int argc, char** argv){
     if(argc > 2 || argc < 1) std::cerr << "Invalid Input| Usage: ./image_rotate <pgm image>" << std::endl;
     std::string fname = argv[1];
     PGMImage img = readFile(fname);
-    //img.printImg(img);
+    img.printImg(img);
     std::cout << img.getAverageBrightness(img) << std::endl;
 }
