@@ -126,11 +126,30 @@ PGMImage readImage(std::string fname){
     return myimg;
 }
 
-int main(int argc, char** argv){
-    if(argc > 2 || argc < 1) std::cerr << "Invalid Input| Usage: ./image_rotate <pgm image>" << std::endl;
-    std::string fname = argv[1];
+int main(int argc, char* argv[]){
+    if(argc > 3 || argc < 2) std::cerr << "Invalid Input| Usage: ./image_rotate <pgm image>" << std::endl;
+    const std::vector<std::string> options = {"-L", "-l", "-R", "-r", "-180"};
+    std::string opcode(argv[1]);
+    std::string fname = argv[2];
     PGMImage img = readImage(fname);
-    img.rotateLeft(&img);
-    img.rotateLeft(&img);
-    img.writeImage(img);
+
+    //check users commandline rotation option, and rotate if a valid input is received
+    if(std::find(options.begin(), options.end(), opcode) != options.end()){
+        if(opcode == "-L" || opcode == "-l"){
+            img.rotateLeft(&img);
+            img.writeImage(img);
+        }
+        else if(opcode == "-R" || opcode == "-r"){
+            img.rotateRight(&img);
+            img.writeImage(img);
+        }
+        else{
+            img.rotateOneEighty(&img);
+            img.writeImage(img);
+        }
+    }
+    else{
+        std::cerr << "invalid option; Options are -L, -R, -180\n" << std::endl;  
+    }
+    return 0;
 }
